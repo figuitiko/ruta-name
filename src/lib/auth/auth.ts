@@ -30,7 +30,7 @@ export const singUp = async (formData: FormData): Promise<FormState> => {
   const { name, email, password } = validatedFields.data;
 
   // 3. Check if the user's email already exists
-  const existingUser = await prisma.userCB.findUnique({ where: { email } });
+  const existingUser = await prisma.user.findUnique({ where: { email } });
 
   if (existingUser) {
     return {
@@ -41,7 +41,7 @@ export const singUp = async (formData: FormData): Promise<FormState> => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   // 3. Insert the user into the database or call an Auth Provider's API
-  const user = await prisma.userCB.create({
+  const user = await prisma.user.create({
     data: {
       name,
       email,
@@ -75,7 +75,7 @@ export const signIn = async (data: LoginFormSchemaType): Promise<FormState> => {
     };
   }
   // 2. Query the database for the user with the given email
-  const user = await prisma.userCB.findUnique({
+  const user = await prisma.user.findUnique({
     where: { email },
   });
 
@@ -99,5 +99,5 @@ export const signIn = async (data: LoginFormSchemaType): Promise<FormState> => {
 };
 
 export async function logout() {
-  deleteSession();
+  await deleteSession();
 }

@@ -21,6 +21,7 @@ export async function decrypt(session: string | undefined = "") {
     const { payload } = await jwtVerify(session, key, {
       algorithms: ["HS256"],
     });
+
     return payload;
   } catch {
     return null;
@@ -30,8 +31,9 @@ export async function decrypt(session: string | undefined = "") {
 export async function createSession(userId: string) {
   const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
   const session = await encrypt({ userId, expiresAt });
+  console.log({ session });
 
-  cookies().set("session", session, {
+  (await cookies()).set("session", session, {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
@@ -43,18 +45,18 @@ export async function createSession(userId: string) {
 }
 
 export async function verifySession() {
-  const cookie = cookies().get("session")?.value;
+  const cookie = (await cookies()).get("session")?.value;
   const session = await decrypt(cookie);
 
   if (!session?.userId) {
-    redirect("/login");
+    redirect("/");
   }
 
   return { isAuth: true, userId: Number(session.userId) };
 }
 
 export async function updateSession() {
-  const session = cookies().get("session")?.value;
+  const session = (await cookies()).get("session")?.value;
   const payload = await decrypt(session);
 
   if (!session || !payload) {
@@ -62,7 +64,7 @@ export async function updateSession() {
   }
 
   const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-  cookies().set("session", session, {
+  (await cookies()).set("session", session, {
     httpOnly: true,
     secure: true,
     expires: expires,
@@ -71,7 +73,7 @@ export async function updateSession() {
   });
 }
 
-export function deleteSession() {
-  cookies().delete("session");
-  redirect("/login");
+export async function deleteSession() {
+  (await cookies()).delete("session");
+  redirect("/");
 }

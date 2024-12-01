@@ -20,6 +20,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
 import { signIn } from "@/lib/auth/auth";
+import {
+  SUBMIT,
+  USER_NAME,
+  USER_NAME_DESCRIPTION,
+} from "@/constants/components/login-form";
 
 export const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -31,6 +36,7 @@ export const LoginForm = () => {
     resolver: zodResolver(LoginFormSchema),
     mode: "onBlur",
   });
+
   const onSubmit = (data: LoginFormSchemaType) => {
     startTransition(async () => {
       // Call your auth function here
@@ -39,19 +45,20 @@ export const LoginForm = () => {
   };
   return (
     <Form {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form
+        onSubmit={methods.handleSubmit(onSubmit)}
+        className="w-full md:w-1/2"
+      >
         <FormField
           control={methods.control}
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>{USER_NAME}</FormLabel>
               <FormControl>
                 <Input placeholder="email" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+              <FormDescription>{USER_NAME_DESCRIPTION}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -65,15 +72,13 @@ export const LoginForm = () => {
               <FormControl>
                 <Input type="password" placeholder="password" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+              <FormDescription>{USER_NAME_DESCRIPTION}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
         <Button disabled={isPending} type="submit">
-          Submit
+          {SUBMIT}
         </Button>
       </form>
     </Form>
