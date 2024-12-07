@@ -21,9 +21,13 @@ import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
 import { signIn } from "@/lib/auth/auth";
 import {
+  HEADING_1,
+  HEADING_2,
+  SESSION_HEADING,
   SUBMIT,
   USER_NAME,
-  USER_NAME_DESCRIPTION,
+  USER_NAME_ERROR_REQUIRED,
+  USER_PASSWORD,
 } from "@/constants/components/login-form";
 
 export const LoginForm = () => {
@@ -47,8 +51,21 @@ export const LoginForm = () => {
     <Form {...methods}>
       <form
         onSubmit={methods.handleSubmit(onSubmit)}
-        className="w-full md:w-1/2"
+        className="w-full  flex flex-col gap-4 p-12 max-w-[720px]"
       >
+        <div className="flex flex-col">
+          <div className="flex gap-3">
+            <h3 className="text-headings-main text-[42px] font-bold">
+              {HEADING_1}
+            </h3>
+            <h3 className="text-headings-secondary text-[42px] font-bold">
+              {HEADING_2}
+            </h3>
+          </div>
+          <h4 className="text-headings-secondary text-2xl font-bold">
+            {SESSION_HEADING}
+          </h4>
+        </div>
         <FormField
           control={methods.control}
           name="email"
@@ -58,7 +75,7 @@ export const LoginForm = () => {
               <FormControl>
                 <Input placeholder="email" {...field} />
               </FormControl>
-              <FormDescription>{USER_NAME_DESCRIPTION}</FormDescription>
+              <FormDescription>{USER_NAME_ERROR_REQUIRED}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -68,18 +85,24 @@ export const LoginForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>{USER_PASSWORD}</FormLabel>
               <FormControl>
                 <Input type="password" placeholder="password" {...field} />
               </FormControl>
-              <FormDescription>{USER_NAME_DESCRIPTION}</FormDescription>
+              <FormDescription>{USER_NAME_ERROR_REQUIRED}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button disabled={isPending} type="submit">
-          {SUBMIT}
-        </Button>
+        <div className="mt-8">
+          <Button
+            className="w-full bg-buttons-main"
+            disabled={isPending}
+            type="submit"
+          >
+            {SUBMIT}
+          </Button>
+        </div>
       </form>
     </Form>
   );

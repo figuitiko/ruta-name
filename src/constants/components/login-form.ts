@@ -1,5 +1,9 @@
 export const USER_NAME = "correo electrónico";
 export const USER_NAME_PLACEHOLDER = "email";
 export const USER_NAME_DESCRIPTION = "Este es tu nombre de usuario público.";
-export const USER_NAME_ERROR_REQUIRED = "El correo electrónico es requerido.";
+export const USER_NAME_ERROR_REQUIRED = "Campo obligatorio";
+export const USER_PASSWORD = "contraseña";
 export const SUBMIT = "Enviar";
+export const HEADING_1 = "REPORTE";
+export const HEADING_2 = "NAME";
+export const SESSION_HEADING = "Iniciar sesión";
